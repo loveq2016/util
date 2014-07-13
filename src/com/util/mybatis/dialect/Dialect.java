@@ -11,6 +11,8 @@ public abstract class Dialect {
 	
 	public final static  String MYSQL = "mysql"; 
 	
+	public final static  String ORACLE = "oracle"; 
+	
 	
 	public abstract String getPageSql(String sql,int offset,int limit);
 }
