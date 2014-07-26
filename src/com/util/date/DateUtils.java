@@ -18,7 +18,7 @@ import java.util.*;
  * @version 1.0
  */
 
-public final class DateUtil {
+public final class DateUtils {
 
 	private static final int[] dayArray = new int[] { 31, 28, 31, 30, 31, 30,
 			31, 31, 30, 31, 30, 31 };
@@ -27,6 +27,21 @@ public final class DateUtil {
 	private int MaxDate;// 一月最大天数
 	private int MaxYear;// 一年最大天数
 
+	/**
+	 * 判断当前时间是否在 开始日期跟结束日期之间
+	 * @param startTime
+	 * @param endTime
+	 * @return
+	 * @throws ParseException
+	 */
+	public static boolean between(String startTime, String endTime) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date start = sdf.parse(startTime);
+		Date end = sdf.parse(endTime);
+		Date nowDate = new Date();// test >= start && test <= end
+		return ((nowDate.equals(start) || nowDate.after(start)) && (nowDate.equals(end) || nowDate.before(end))); 
+	}
+	
 	public static String transformDate(String date, String old_pattern,
 			String new_pattern) {
 		return getDate(getDate(date, old_pattern), new_pattern);
@@ -627,8 +642,8 @@ public final class DateUtil {
 		 */
 		GregorianCalendar gc = (GregorianCalendar) Calendar.getInstance();
 		gc.setTime(date);
-		gc.setTime(DateUtil.getNextMonth(gc.getTime()));
-		gc.setTime(DateUtil.getLastDayOfMonth(gc.getTime()));
+		gc.setTime(DateUtils.getNextMonth(gc.getTime()));
+		gc.setTime(DateUtils.getLastDayOfMonth(gc.getTime()));
 		return gc.getTime();
 	}
 
@@ -645,8 +660,8 @@ public final class DateUtil {
 		 */
 		GregorianCalendar gc = (GregorianCalendar) Calendar.getInstance();
 		gc.setTime(date);
-		gc.setTime(DateUtil.getNextWeek(gc.getTime()));
-		gc.setTime(DateUtil.getLastDayOfWeek(gc.getTime()));
+		gc.setTime(DateUtils.getNextWeek(gc.getTime()));
+		gc.setTime(DateUtils.getLastDayOfWeek(gc.getTime()));
 		return gc.getTime();
 	}
 
@@ -663,8 +678,8 @@ public final class DateUtil {
 		 */
 		GregorianCalendar gc = (GregorianCalendar) Calendar.getInstance();
 		gc.setTime(date);
-		gc.setTime(DateUtil.getNextMonth(gc.getTime()));
-		gc.setTime(DateUtil.getFirstDayOfMonth(gc.getTime()));
+		gc.setTime(DateUtils.getNextMonth(gc.getTime()));
+		gc.setTime(DateUtils.getFirstDayOfMonth(gc.getTime()));
 		return gc.getTime();
 	}
 
@@ -672,8 +687,8 @@ public final class DateUtil {
 		/**
 		 * 详细设计： 1.调用getNextMonth设置当前时间 2.以1为基础，调用getFirstDayOfMonth
 		 */
-		gc.setTime(DateUtil.getNextMonth(gc.getTime()));
-		gc.setTime(DateUtil.getFirstDayOfMonth(gc.getTime()));
+		gc.setTime(DateUtils.getNextMonth(gc.getTime()));
+		gc.setTime(DateUtils.getFirstDayOfMonth(gc.getTime()));
 		return gc;
 	}
 
@@ -690,8 +705,8 @@ public final class DateUtil {
 		 */
 		GregorianCalendar gc = (GregorianCalendar) Calendar.getInstance();
 		gc.setTime(date);
-		gc.setTime(DateUtil.getNextWeek(gc.getTime()));
-		gc.setTime(DateUtil.getFirstDayOfWeek(gc.getTime()));
+		gc.setTime(DateUtils.getNextWeek(gc.getTime()));
+		gc.setTime(DateUtils.getFirstDayOfWeek(gc.getTime()));
 		return gc.getTime();
 	}
 
@@ -699,8 +714,8 @@ public final class DateUtil {
 		/**
 		 * 详细设计： 1.调用getNextWeek设置当前时间 2.以1为基础，调用getFirstDayOfWeek
 		 */
-		gc.setTime(DateUtil.getNextWeek(gc.getTime()));
-		gc.setTime(DateUtil.getFirstDayOfWeek(gc.getTime()));
+		gc.setTime(DateUtils.getNextWeek(gc.getTime()));
+		gc.setTime(DateUtils.getFirstDayOfWeek(gc.getTime()));
 		return gc;
 	}
 
@@ -1378,7 +1393,7 @@ public final class DateUtil {
 	 */
 	public static String getWeek(String sdate) {
 		// 再转换为时间
-		Date date = DateUtil.strToDate(sdate);
+		Date date = DateUtils.strToDate(sdate);
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
 		// int hour=c.get(Calendar.DAY_OF_WEEK);
@@ -1799,7 +1814,7 @@ public final class DateUtil {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		DateUtil tt = new DateUtil();
+		DateUtils tt = new DateUtils();
 		System.out.println("获取当天日期:" + tt.getNowTime());
 		System.out.println("获取本周一日期:" + tt.getMondayOFWeek());
 		System.out.println("获取本周日的日期~:" + tt.getCurrentWeekday());
@@ -1822,7 +1837,7 @@ public final class DateUtil {
 		System.out.println("获取明年最后一天日期:" + tt.getNextYearEnd());
 		System.out.println("获取本季度第一天到最后一天:" + tt.getThisSeasonTime(11));
 		System.out.println("获取两个日期之间间隔天数2008-12-1~2008-9.29:"
-				+ DateUtil.getTwoDay("2008-12-1", "2008-9-29"));
+				+ DateUtils.getTwoDay("2008-12-1", "2008-9-29"));
 		
 		System.out.println();dateDiff("2013-3-23 12:12:12",new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), "yyyy-MM-dd HH:mm:ss");
 
