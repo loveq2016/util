@@ -1,6 +1,6 @@
 package com.util.test;
 
-import com.util.date.DateUtil;
+import com.util.date.DateUtils;
 
 public class RunTimeTest {
 
@@ -19,7 +19,7 @@ public class RunTimeTest {
 	
 	public void endAndPrintSeconds() {
 		endTime = System.currentTimeMillis();
-		System.out.println(DateUtil.formatLongToTime(endTime - startTime));
+		System.out.println(DateUtils.formatLongToTime(endTime - startTime));
 	}
 	
 	public Long end() {
