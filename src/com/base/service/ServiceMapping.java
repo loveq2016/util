@@ -14,7 +14,7 @@ import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.util.array.ArrayUtil;
-import com.util.date.DateUtil;
+import com.util.date.DateUtils;
 import com.util.exception.DataErrorsException;
 import com.util.spring.SpringUtil;
 import com.util.string.StringUtil;
@@ -450,11 +450,11 @@ public final class ServiceMapping {
 		} else if (type.equals("class java.util.Date")) {
 			if (array.length == 1) {
 				method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"EqualTo", Date.class);
-				method.invoke(criteria,DateUtil.parseDateSecondFormat(array[0]));
+				method.invoke(criteria,DateUtils.parseDateSecondFormat(array[0]));
 			} else if (array.length == 2) {
 				if ("noteq".equalsIgnoreCase(array[1])) {
 					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"NotEqualTo", Date.class);
-					method.invoke(criteria,DateUtil.parseDateSecondFormat(array[0]));
+					method.invoke(criteria,DateUtils.parseDateSecondFormat(array[0]));
 				} else if ("in".equalsIgnoreCase(array[1])) {
 					List list = null;
 					array = array[0].split("&");
@@ -485,7 +485,7 @@ public final class ServiceMapping {
 					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"Between", Date.class, Date.class);
 					array = array[0].split("&");
 					if (array != null && array.length >= 2) {
-						method.invoke(criteria,DateUtil.parseDateSecondFormat(array[0]),DateUtil.parseDateSecondFormat(array[1]));		
+						method.invoke(criteria,DateUtils.parseDateSecondFormat(array[0]),DateUtils.parseDateSecondFormat(array[1]));		
 					} else {
 						log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+" Between 查询条件不合格，无法添加到查询条件中");
 					}
@@ -493,22 +493,22 @@ public final class ServiceMapping {
 					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"NotBetween", Date.class, Date.class);
 					array = array[0].split("&");
 					if (array != null && array.length >= 2) {
-						method.invoke(criteria,DateUtil.parseDateSecondFormat(array[0]),DateUtil.parseDateSecondFormat(array[1]));		
+						method.invoke(criteria,DateUtils.parseDateSecondFormat(array[0]),DateUtils.parseDateSecondFormat(array[1]));		
 					} else {
 						log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+" NotBetween 查询条件不合格，无法添加到查询条件中");
 					}
 				} else if ("gt".equalsIgnoreCase(array[array.length-1]) || "greaterThan".equalsIgnoreCase(array[array.length-1])) {
 					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"GreaterThan", Date.class);
-					method.invoke(criteria,DateUtil.parseDateSecondFormat(array[0]));		
+					method.invoke(criteria,DateUtils.parseDateSecondFormat(array[0]));		
 				} else if ("gteq".equalsIgnoreCase(array[array.length-1]) || "gtOrEq".equalsIgnoreCase(array[array.length-1])) {
 					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"GreaterThanOrEqualTo", Date.class);
-					method.invoke(criteria,DateUtil.parseDateSecondFormat(array[0]));
+					method.invoke(criteria,DateUtils.parseDateSecondFormat(array[0]));
 				} else if ("lt".equalsIgnoreCase(array[array.length-1]) || "lessThan".equalsIgnoreCase(array[array.length-1])) {
 					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"LessThan", Date.class);
-					method.invoke(criteria,DateUtil.parseDateSecondFormat(array[0]));
+					method.invoke(criteria,DateUtils.parseDateSecondFormat(array[0]));
 				} else if ("lteq".equalsIgnoreCase(array[array.length-1]) || "ltOrEq".equalsIgnoreCase(array[array.length-1])) {
 					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"LessThanOrEqualTo", Date.class);
-					method.invoke(criteria,DateUtil.parseDateSecondFormat(array[0]));
+					method.invoke(criteria,DateUtils.parseDateSecondFormat(array[0]));
 				} else {
 					log.warn("找不到执行的方法");
 				}
@@ -749,7 +749,7 @@ public final class ServiceMapping {
 			method.invoke(object, Integer.valueOf(entry.getValue()));
 		} else if (type.equals("class java.util.Date")) {
 			Method method = clas.getDeclaredMethod("set" + StringUtil.firstLetterToUpperCase(entry.getKey()),Date.class);
-			method.invoke(object,DateUtil.parseDateSecondFormat(entry.getValue()));
+			method.invoke(object,DateUtils.parseDateSecondFormat(entry.getValue()));
 		} else if (type.equals("class java.lang.Short")) {
 			Method method = clas.getDeclaredMethod("set" + StringUtil.firstLetterToUpperCase(entry.getKey()),Short.class);
 			method.invoke(object, Short.valueOf(entry.getValue()));
