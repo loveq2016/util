@@ -21,7 +21,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 import com.util.array.ArrayUtil;
 import com.util.config.Conf;
-import com.util.date.DateUtil;
+import com.util.date.DateUtils;
 
 public final class HttpUtil extends HttpURLUtil {
 
@@ -117,7 +117,7 @@ public final class HttpUtil extends HttpURLUtil {
 
 				} else if ("setDate".equalsIgnoreCase(thisName)) {
 					thisName = request.getParameter(thisName);
-					thisValue = DateUtil.getDateSecondFormat();
+					thisValue = DateUtils.getDateSecondFormat();
 				} else {
 					thisValue = ArrayUtil.arrayToString(request
 							.getParameterValues(thisName));
