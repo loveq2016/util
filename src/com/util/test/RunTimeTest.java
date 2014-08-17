@@ -1,5 +1,8 @@
 package com.util.test;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.util.date.DateUtils;
 
 public class RunTimeTest {
@@ -14,16 +17,18 @@ public class RunTimeTest {
 
 	public void endAndPrintMilliSeconds() {
 		endTime = System.currentTimeMillis();
-		System.out.println(endTime - startTime + "ms");
+		LOG.info(endTime - startTime + "ms");
 	}
 	
 	public void endAndPrintSeconds() {
 		endTime = System.currentTimeMillis();
-		System.out.println(DateUtils.formatLongToTime(endTime - startTime));
+		LOG.info(DateUtils.formatLongToTime(endTime - startTime));
 	}
 	
 	public Long end() {
 		endTime = System.currentTimeMillis();
 		return (endTime - startTime);
 	}
+	
+	private final static Log LOG = LogFactory.getLog(RunTimeTest.class);
 }
