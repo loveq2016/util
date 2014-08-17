@@ -41,9 +41,6 @@ public final class HttpUtil extends HttpURLUtil {
 		return ip;
 	}
 
-	public void dd() {
-
-	}
 
 	public static InputStream getInputStream(String url) {
 		HttpURLConnection connection = null;
@@ -134,6 +131,16 @@ public final class HttpUtil extends HttpURLUtil {
 		return getParameterMap(getRequest());
 	}
 
+	public static boolean isAjaxRequest(HttpServletRequest request){  
+	    String header = request.getHeader("X-Requested-With");  
+	    String isAjax = request.getHeader("isAjax");
+	    if ("XMLHttpRequest".equals(header) || "isAjax".equalsIgnoreCase(isAjax)) {
+	    	return true;
+	    } else {
+	    	return false;
+	    }
+	} 
+	
 	/**
 	 * 得到HttpServletRequest对象
 	 * 
