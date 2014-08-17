@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 
-import com.base.dao.impl.BaseDaoImpl;
+import com.base.dao.BaseDao;
 import com.base.service.BaseService;
 import com.util.pager.Pager;
 
@@ -16,11 +16,11 @@ import com.util.pager.Pager;
  * @param <E>
  * @param <GeneralDAO>
  */
-public abstract class BaseServiceImpl<M, E, GeneralDAO extends BaseDaoImpl<M, E>> implements BaseService<M, E> {
+public  class BaseServiceImpl<M, E> implements BaseService<M, E> {
 
-	private GeneralDAO baseDao;
+	private BaseDao<M, E> baseDao;
 
-	public void setBaseDao(GeneralDAO baseDao) {
+	public void setBaseDao(BaseDao<M, E> baseDao) {
 		this.baseDao = baseDao;
 	}
 
@@ -92,10 +92,6 @@ public abstract class BaseServiceImpl<M, E, GeneralDAO extends BaseDaoImpl<M, E>
 		return baseDao.avg(example);
 	}
 
-	public final M selectByEntity(E example) {
-		return baseDao.selectByEntity(example);
-	}
-
 	public final Map<String, Object> selectByExampleForMap(E example) {
 		return baseDao.selectByExampleForMap(example);
 	}
@@ -104,26 +100,23 @@ public abstract class BaseServiceImpl<M, E, GeneralDAO extends BaseDaoImpl<M, E>
 		return baseDao.selectByExampleForListMap(example);
 	}
 	
-	public final List<Map<String, Object>> selectByExampleForListMap(E example,RowBounds row) {
-		return baseDao.selectByExampleForListMap(example, row);
-	}
-	
-	public final M executeQuery(E example,String methodName) {
-		return baseDao.executeQuery(example, methodName);
-	}
-	
-	public final List<M> executeQuery(E example,RowBounds row,String methodName) {
-		return baseDao.executeQuery(example,row, methodName);
+	public final List<Map<String, Object>> selectByExampleForListMap(E example, Integer offset, Integer pageSize) {
+		return baseDao.selectByExampleForListMap(example, new com.util.mybatis.RowBounds(offset, pageSize));
 	}
 	
 	public final int batchInsert(List<M> list) {
 		return baseDao.batchInsert(list);
 	}
 	
-	public final Pager selectByPager(E example,Integer offset,Integer pageSize) {
+	public final Pager selectByExampleForPager(E example,Integer offset,Integer pageSize) {
 		List<M> list = this.selectByExample(example, new com.util.mybatis.RowBounds(offset, pageSize));
 		Pager pager = new Pager(this.countByExample(example), offset, pageSize);
 		pager.setList(list);
 		return pager;
+	}
+
+	@Override
+	public M selectByExampleOne(E example) {
+		return null;
 	}
 }
