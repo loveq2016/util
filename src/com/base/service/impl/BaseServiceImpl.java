@@ -3,10 +3,10 @@ package com.base.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.session.RowBounds;
 
 import com.base.dao.BaseDao;
 import com.base.service.BaseService;
+import com.util.mybatis.RowBounds;
 import com.util.pager.Pager;
 
 /**
@@ -16,7 +16,7 @@ import com.util.pager.Pager;
  * @param <E>
  * @param <GeneralDAO>
  */
-public  class BaseServiceImpl<M, E> implements BaseService<M, E> {
+public abstract class BaseServiceImpl<M, E> implements BaseService<M, E> {
 
 	private BaseDao<M, E> baseDao;
 
@@ -39,13 +39,17 @@ public  class BaseServiceImpl<M, E> implements BaseService<M, E> {
 	public final M selectById(String id) {
 		return baseDao.selectByPrimaryKey(id);
 	}
+	
+	public final M selectById(Long id) {
+		return baseDao.selectByPrimaryKey(id);
+	}
 
 	public final List<M> selectByExample(E example) {
 		return baseDao.selectByExample(example);
 	}
 
-	public final List<M> selectByExample(E example, RowBounds row) {
-		return baseDao.selectByExample(example, row);
+	public final List<M> selectByExample(E example, Integer offset,Integer pageSize) {
+		return baseDao.selectByExample(example, new RowBounds(offset, pageSize));
 	}
 
 	public final int countByExample(E example) {
@@ -101,7 +105,7 @@ public  class BaseServiceImpl<M, E> implements BaseService<M, E> {
 	}
 	
 	public final List<Map<String, Object>> selectByExampleForListMap(E example, Integer offset, Integer pageSize) {
-		return baseDao.selectByExampleForListMap(example, new com.util.mybatis.RowBounds(offset, pageSize));
+		return baseDao.selectByExampleForListMap(example, new RowBounds(offset, pageSize));
 	}
 	
 	public final int batchInsert(List<M> list) {
@@ -109,14 +113,22 @@ public  class BaseServiceImpl<M, E> implements BaseService<M, E> {
 	}
 	
 	public final Pager selectByExampleForPager(E example,Integer offset,Integer pageSize) {
-		List<M> list = this.selectByExample(example, new com.util.mybatis.RowBounds(offset, pageSize));
+		List<M> list = this.selectByExample(example, offset, pageSize);
 		Pager pager = new Pager(this.countByExample(example), offset, pageSize);
 		pager.setList(list);
 		return pager;
 	}
 
 	@Override
-	public M selectByExampleOne(E example) {
+	public final M selectByExampleOne(E example) {
+		List<M> list = selectByExample(example);
+		if (list != null && !list.isEmpty()) {
+			if (list.size() == 1) {
+				return list.get(0);
+			} else {
+				throw new RuntimeException("selectByExampleOne方法得到的数据不止一条");
+			}
+		}
 		return null;
 	}
 }

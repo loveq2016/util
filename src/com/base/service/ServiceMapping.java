@@ -17,7 +17,7 @@ import com.util.array.ArrayUtil;
 import com.util.date.DateUtils;
 import com.util.exception.DataErrorsException;
 import com.util.spring.SpringUtil;
-import com.util.string.StringUtil;
+import com.util.string.StringUtils;
 import com.util.mybatis.RowBounds;
 import com.util.pager.Pager;
 /**
@@ -165,7 +165,7 @@ public final class ServiceMapping {
 			String serviceMethodName, Class<?> serviceParameterClass, Integer offset, Integer pageSize) {
 		try {
 
-			String modelName = StringUtil.firstLetterToLowerCase(modelPackage
+			String modelName = StringUtils.firstLetterToLowerCase(modelPackage
 					.substring(modelPackage.lastIndexOf(".") + 1,
 							modelPackage.length()));
 			Object service = SpringUtil.getBean(modelName + "Service");
@@ -196,13 +196,13 @@ public final class ServiceMapping {
 					}
 					
 					String ob = map.get("ob");
-					if (StringUtil.isNotEmpty(ob)) {
+					if (StringUtils.isNotEmpty(ob)) {
 						Method isCacheMethod = clas2.getSuperclass().getDeclaredMethod("setOrderByClause", String.class);
 						isCacheMethod.invoke(object2, ob);
 					}
 					
 					String gb = map.get("gb");
-					if (StringUtil.isNotEmpty(gb)) {
+					if (StringUtils.isNotEmpty(gb)) {
 						Method setGroupBy = clas2.getSuperclass().getDeclaredMethod("setGroupBy", String.class);
 						setGroupBy.invoke(object2, gb);
 					}
@@ -213,7 +213,7 @@ public final class ServiceMapping {
 				if (map != null && !map.isEmpty()) {
 					String where = map.get("where");
 					log.debug("  where条件是"+where);
-					if (StringUtil.isNotEmpty(where)) {
+					if (StringUtils.isNotEmpty(where)) {
 						ObjectMapper om = new ObjectMapper();
 						Map<String, String> whereMap = om.readValue(where, Map.class);
 						for (Entry<String, String> entry : whereMap.entrySet()) {
@@ -249,7 +249,7 @@ public final class ServiceMapping {
 						setBeanData(clas, object, entry);
 					}
 					String where = map.get("where");
-					if (StringUtil.isNotEmpty(where)) {
+					if (StringUtils.isNotEmpty(where)) {
 						log.warn(serviceMethodName+"where条件是"+where);
 						ObjectMapper om = new ObjectMapper();
 						Map<String, String> whereMap = om.readValue(where, Map.class);
@@ -295,7 +295,7 @@ public final class ServiceMapping {
 		
 		String value = entry.getValue();
 		String[] array = null;
-		if (StringUtil.isNotEmpty(value)) {
+		if (StringUtils.isNotEmpty(value)) {
 			if (value.lastIndexOf(",") != -1) {
 				array = new String[2];
 				array[0] = value.substring(0, value.lastIndexOf(","));
@@ -305,23 +305,23 @@ public final class ServiceMapping {
 				array[0] = value;
 			}
 		}
-		if (ArrayUtil.isEmpty(array) || StringUtil.isEmpty(array[0])) {
-			log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+"为空, 查询条件不合格，无法添加到查询条件中");
+		if (ArrayUtil.isEmpty(array) || StringUtils.isEmpty(array[0])) {
+			log.warn(StringUtils.firstLetterToUpperCase(entry.getKey())+"为空, 查询条件不合格，无法添加到查询条件中");
 			return ;
 		}
 		if (type.equals("class java.lang.String")) {
 			if (array.length == 1) {
-				method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"EqualTo", String.class);
+				method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"EqualTo", String.class);
 				method.invoke(criteria,array[0]);
 			} else if (array.length == 2) {
 				if ("noteq".equalsIgnoreCase(array[1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"NotEqualTo", String.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"NotEqualTo", String.class);
 					method.invoke(criteria,array[0]);
 				} else if ("like".equalsIgnoreCase(array[1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"Like", String.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"Like", String.class);
 					method.invoke(criteria,"%"+array[0]+"%");
 				} else if ("notLike".equalsIgnoreCase(array[1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"NotLike", String.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"NotLike", String.class);
 					method.invoke(criteria,"%"+array[0]+"%");
 				} else if ("in".equalsIgnoreCase(array[1])) {
 					List list = null;
@@ -331,10 +331,10 @@ public final class ServiceMapping {
 						for (String string : array) {
 							list.add(string);
 						}
-						method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"In", List.class);
+						method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"In", List.class);
 						method.invoke(criteria,list);
 					} else {
-						log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+" In 查询条件不合格，无法添加到查询条件中");
+						log.warn(StringUtils.firstLetterToUpperCase(entry.getKey())+" In 查询条件不合格，无法添加到查询条件中");
 					}
 				} else if ("notIn".equalsIgnoreCase(array[array.length-1])) {
 					List list = null;
@@ -344,38 +344,38 @@ public final class ServiceMapping {
 						for (String string : array) {
 							list.add(string);
 						}
-						method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"NotIn", List.class);
+						method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"NotIn", List.class);
 						method.invoke(criteria,list);
 					} else {
-						log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+" NotIn 查询条件不合格，无法添加到查询条件中");
+						log.warn(StringUtils.firstLetterToUpperCase(entry.getKey())+" NotIn 查询条件不合格，无法添加到查询条件中");
 					}
 				} else if ("bw".equalsIgnoreCase(array[array.length-1]) || "between".equalsIgnoreCase(array[array.length-1])) {
 					array = array[0].split("&");
 					if (array != null && array.length >= 2) {
-						method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"Between", String.class, String.class);
+						method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"Between", String.class, String.class);
 						method.invoke(criteria,array[0],array[1]);		
 					} else {
-						log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+" Between 查询条件不合格，无法添加到查询条件中");
+						log.warn(StringUtils.firstLetterToUpperCase(entry.getKey())+" Between 查询条件不合格，无法添加到查询条件中");
 					}
 				} else if ("notbw".equalsIgnoreCase(array[array.length-1]) || "notBetween".equalsIgnoreCase(array[array.length-1])) {
 					array = array[0].split("&");
 					if (array != null && array.length >= 2) {
-						method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"NotBetween", String.class, String.class);
+						method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"NotBetween", String.class, String.class);
 						method.invoke(criteria,array[0],array[1]);		
 					} else {
-						log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+" NotBetween 查询条件不合格，无法添加到查询条件中");
+						log.warn(StringUtils.firstLetterToUpperCase(entry.getKey())+" NotBetween 查询条件不合格，无法添加到查询条件中");
 					}
 				} else if ("gt".equalsIgnoreCase(array[array.length-1]) || "greaterThan".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"GreaterThan", String.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"GreaterThan", String.class);
 					method.invoke(criteria,array[0]);		
 				} else if ("gteq".equalsIgnoreCase(array[array.length-1]) || "gtOrEq".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"GreaterThanOrEqualTo", String.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"GreaterThanOrEqualTo", String.class);
 					method.invoke(criteria,array[0]);
 				} else if ("lt".equalsIgnoreCase(array[array.length-1]) || "lessThan".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"LessThan", String.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"LessThan", String.class);
 					method.invoke(criteria,array[0]);
 				} else if ("lteq".equalsIgnoreCase(array[array.length-1]) || "ltOrEq".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"LessThanOrEqualTo", String.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"LessThanOrEqualTo", String.class);
 					method.invoke(criteria,array[0]);
 				} else {
 					log.warn("找不到执行的方法");
@@ -383,11 +383,11 @@ public final class ServiceMapping {
 			}
 		} else if (type.equals("class java.lang.Integer")) {
 			if (array.length == 1) {
-				method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"EqualTo", Integer.class);
+				method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"EqualTo", Integer.class);
 				method.invoke(criteria,Integer.valueOf(array[0]));
 			} else if (array.length == 2) {
 				if ("noteq".equalsIgnoreCase(array[1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"NotEqualTo", Integer.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"NotEqualTo", Integer.class);
 					method.invoke(criteria,Integer.valueOf(array[0]));
 				} else if ("in".equalsIgnoreCase(array[1])) {
 					List list = null;
@@ -397,10 +397,10 @@ public final class ServiceMapping {
 						for (String string : array) {
 							list.add(string);
 						}
-						method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"In", List.class);
+						method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"In", List.class);
 						method.invoke(criteria,list);
 					} else {
-						log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+" In 查询条件不合格，无法添加到查询条件中");
+						log.warn(StringUtils.firstLetterToUpperCase(entry.getKey())+" In 查询条件不合格，无法添加到查询条件中");
 					}
 				} else if ("notIn".equalsIgnoreCase(array[array.length-1])) {
 					List list = null;
@@ -410,38 +410,38 @@ public final class ServiceMapping {
 						for (String string : array) {
 							list.add(string);
 						}
-						method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"NotIn", List.class);
+						method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"NotIn", List.class);
 						method.invoke(criteria,list);
 					} else {
-						log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+" NotIn 查询条件不合格，无法添加到查询条件中");
+						log.warn(StringUtils.firstLetterToUpperCase(entry.getKey())+" NotIn 查询条件不合格，无法添加到查询条件中");
 					}
 				} else if ("bw".equalsIgnoreCase(array[array.length-1]) || "between".equalsIgnoreCase(array[array.length-1])) {
 					array = array[0].split("&");
 					if (array != null && array.length >= 2) {
-						method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"Between", Integer.class, Integer.class);
+						method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"Between", Integer.class, Integer.class);
 						method.invoke(criteria,Integer.valueOf(array[0]),Integer.valueOf(array[1]));		
 					} else {
-						log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+" Between 查询条件不合格，无法添加到查询条件中");
+						log.warn(StringUtils.firstLetterToUpperCase(entry.getKey())+" Between 查询条件不合格，无法添加到查询条件中");
 					}
 				} else if ("notbw".equalsIgnoreCase(array[array.length-1]) || "notBetween".equalsIgnoreCase(array[array.length-1])) {
 					array = array[0].split("&");
 					if (array != null && array.length >= 2) {
-						method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"NotBetween", Integer.class, Integer.class);
+						method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"NotBetween", Integer.class, Integer.class);
 						method.invoke(criteria,Integer.valueOf(array[0]),Integer.valueOf(array[1]));		
 					} else {
-						log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+" NotBetween 查询条件不合格，无法添加到查询条件中");
+						log.warn(StringUtils.firstLetterToUpperCase(entry.getKey())+" NotBetween 查询条件不合格，无法添加到查询条件中");
 					}
 				} else if ("gt".equalsIgnoreCase(array[array.length-1]) || "greaterThan".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"GreaterThan", Integer.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"GreaterThan", Integer.class);
 					method.invoke(criteria,Integer.valueOf(array[0]));		
 				} else if ("gteq".equalsIgnoreCase(array[array.length-1]) || "gtOrEq".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"GreaterThanOrEqualTo", Integer.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"GreaterThanOrEqualTo", Integer.class);
 					method.invoke(criteria,Integer.valueOf(array[0]));
 				} else if ("lt".equalsIgnoreCase(array[array.length-1]) || "lessThan".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"LessThan", Integer.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"LessThan", Integer.class);
 					method.invoke(criteria,Integer.valueOf(array[0]));
 				} else if ("lteq".equalsIgnoreCase(array[array.length-1]) || "ltOrEq".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"LessThanOrEqualTo", Integer.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"LessThanOrEqualTo", Integer.class);
 					method.invoke(criteria,Integer.valueOf(array[0]));
 				} else {
 					log.warn("找不到执行的方法");
@@ -449,11 +449,11 @@ public final class ServiceMapping {
 			}
 		} else if (type.equals("class java.util.Date")) {
 			if (array.length == 1) {
-				method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"EqualTo", Date.class);
+				method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"EqualTo", Date.class);
 				method.invoke(criteria,DateUtils.parseDateSecondFormat(array[0]));
 			} else if (array.length == 2) {
 				if ("noteq".equalsIgnoreCase(array[1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"NotEqualTo", Date.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"NotEqualTo", Date.class);
 					method.invoke(criteria,DateUtils.parseDateSecondFormat(array[0]));
 				} else if ("in".equalsIgnoreCase(array[1])) {
 					List list = null;
@@ -463,10 +463,10 @@ public final class ServiceMapping {
 						for (String string : array) {
 							list.add(string);
 						}
-						method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"In", List.class);
+						method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"In", List.class);
 						method.invoke(criteria,list);
 					} else {
-						log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+" In 查询条件不合格，无法添加到查询条件中");
+						log.warn(StringUtils.firstLetterToUpperCase(entry.getKey())+" In 查询条件不合格，无法添加到查询条件中");
 					}
 				} else if ("notIn".equalsIgnoreCase(array[array.length-1])) {
 					List list = null;
@@ -476,38 +476,38 @@ public final class ServiceMapping {
 						for (String string : array) {
 							list.add(string);
 						}
-						method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"NotIn", List.class);
+						method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"NotIn", List.class);
 						method.invoke(criteria,list);
 					} else {
-						log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+" NotIn 查询条件不合格，无法添加到查询条件中");
+						log.warn(StringUtils.firstLetterToUpperCase(entry.getKey())+" NotIn 查询条件不合格，无法添加到查询条件中");
 					}
 				} else if ("bw".equalsIgnoreCase(array[array.length-1]) || "between".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"Between", Date.class, Date.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"Between", Date.class, Date.class);
 					array = array[0].split("&");
 					if (array != null && array.length >= 2) {
 						method.invoke(criteria,DateUtils.parseDateSecondFormat(array[0]),DateUtils.parseDateSecondFormat(array[1]));		
 					} else {
-						log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+" Between 查询条件不合格，无法添加到查询条件中");
+						log.warn(StringUtils.firstLetterToUpperCase(entry.getKey())+" Between 查询条件不合格，无法添加到查询条件中");
 					}
 				} else if ("notbw".equalsIgnoreCase(array[array.length-1]) || "notBetween".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"NotBetween", Date.class, Date.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"NotBetween", Date.class, Date.class);
 					array = array[0].split("&");
 					if (array != null && array.length >= 2) {
 						method.invoke(criteria,DateUtils.parseDateSecondFormat(array[0]),DateUtils.parseDateSecondFormat(array[1]));		
 					} else {
-						log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+" NotBetween 查询条件不合格，无法添加到查询条件中");
+						log.warn(StringUtils.firstLetterToUpperCase(entry.getKey())+" NotBetween 查询条件不合格，无法添加到查询条件中");
 					}
 				} else if ("gt".equalsIgnoreCase(array[array.length-1]) || "greaterThan".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"GreaterThan", Date.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"GreaterThan", Date.class);
 					method.invoke(criteria,DateUtils.parseDateSecondFormat(array[0]));		
 				} else if ("gteq".equalsIgnoreCase(array[array.length-1]) || "gtOrEq".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"GreaterThanOrEqualTo", Date.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"GreaterThanOrEqualTo", Date.class);
 					method.invoke(criteria,DateUtils.parseDateSecondFormat(array[0]));
 				} else if ("lt".equalsIgnoreCase(array[array.length-1]) || "lessThan".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"LessThan", Date.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"LessThan", Date.class);
 					method.invoke(criteria,DateUtils.parseDateSecondFormat(array[0]));
 				} else if ("lteq".equalsIgnoreCase(array[array.length-1]) || "ltOrEq".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"LessThanOrEqualTo", Date.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"LessThanOrEqualTo", Date.class);
 					method.invoke(criteria,DateUtils.parseDateSecondFormat(array[0]));
 				} else {
 					log.warn("找不到执行的方法");
@@ -515,11 +515,11 @@ public final class ServiceMapping {
 			}
 		} else if (type.equals("class java.lang.Short")) {
 			if (array.length == 1) {
-				method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"EqualTo", Short.class);
+				method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"EqualTo", Short.class);
 				method.invoke(criteria,Short.valueOf(array[0]));
 			} else if (array.length == 2) {
 				if ("noteq".equalsIgnoreCase(array[1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"NotEqualTo", Short.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"NotEqualTo", Short.class);
 					method.invoke(criteria,Short.valueOf(array[0]));
 				} else if ("in".equalsIgnoreCase(array[1])) {
 					List list = null;
@@ -529,10 +529,10 @@ public final class ServiceMapping {
 						for (String string : array) {
 							list.add(string);
 						}
-						method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"In", List.class);
+						method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"In", List.class);
 						method.invoke(criteria,list);
 					} else {
-						log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+" In 查询条件不合格，无法添加到查询条件中");
+						log.warn(StringUtils.firstLetterToUpperCase(entry.getKey())+" In 查询条件不合格，无法添加到查询条件中");
 					}
 				} else if ("notIn".equalsIgnoreCase(array[array.length-1])) {
 					List list = null;
@@ -542,40 +542,40 @@ public final class ServiceMapping {
 						for (String string : array) {
 							list.add(string);
 						}
-						method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"NotIn", List.class);
+						method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"NotIn", List.class);
 						method.invoke(criteria,list);
 					} else {
-						log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+" NotIn 查询条件不合格，无法添加到查询条件中");
+						log.warn(StringUtils.firstLetterToUpperCase(entry.getKey())+" NotIn 查询条件不合格，无法添加到查询条件中");
 					}
 				} else if ("bw".equalsIgnoreCase(array[array.length-1]) || "between".equalsIgnoreCase(array[array.length-1])) {
 					array = array[0].split("&");
 					if (array != null && array.length >= 2) {
-						method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"Between", Short.class, Short.class);
+						method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"Between", Short.class, Short.class);
 						method.invoke(criteria,Short.valueOf(array[0]),Short.valueOf(array[1]));		
 					} else {
-						log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+" Between 查询条件不合格，无法添加到查询条件中");
+						log.warn(StringUtils.firstLetterToUpperCase(entry.getKey())+" Between 查询条件不合格，无法添加到查询条件中");
 					}
 				} else if ("notbw".equalsIgnoreCase(array[array.length-1]) || "notBetween".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"NotBetween", Short.class, Short.class);
-					if (StringUtil.isNotEmpty(array[0])) {
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"NotBetween", Short.class, Short.class);
+					if (StringUtils.isNotEmpty(array[0])) {
 						array = array[0].split("&");
 						if (array != null && array.length >= 2) {
 							method.invoke(criteria,Short.valueOf(array[0]),Short.valueOf(array[1]));		
 						} else {
-							log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+" NotBetween 查询条件不合格，无法添加到查询条件中");
+							log.warn(StringUtils.firstLetterToUpperCase(entry.getKey())+" NotBetween 查询条件不合格，无法添加到查询条件中");
 						}
 					}
 				} else if ("gt".equalsIgnoreCase(array[array.length-1]) || "greaterThan".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"GreaterThan", Short.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"GreaterThan", Short.class);
 					method.invoke(criteria,Short.valueOf(array[0]));		
 				} else if ("gteq".equalsIgnoreCase(array[array.length-1]) || "gtOrEq".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"GreaterThanOrEqualTo", Short.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"GreaterThanOrEqualTo", Short.class);
 					method.invoke(criteria,Short.valueOf(array[0]));
 				} else if ("lt".equalsIgnoreCase(array[array.length-1]) || "lessThan".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"LessThan", Short.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"LessThan", Short.class);
 					method.invoke(criteria,Short.valueOf(array[0]));
 				} else if ("lteq".equalsIgnoreCase(array[array.length-1]) || "ltOrEq".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"LessThanOrEqualTo", Short.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"LessThanOrEqualTo", Short.class);
 					method.invoke(criteria,Short.valueOf(array[0]));
 				} else {
 					log.warn("找不到执行的方法");
@@ -583,11 +583,11 @@ public final class ServiceMapping {
 			}
 		} else if (type.equals("class java.lang.Double")) {
 			if (array.length == 1) {
-				method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"EqualTo", Double.class);
+				method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"EqualTo", Double.class);
 				method.invoke(criteria,Double.valueOf(array[0]));
 			} else if (array.length == 2) {
 				if ("noteq".equalsIgnoreCase(array[1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"NotEqualTo", Double.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"NotEqualTo", Double.class);
 					method.invoke(criteria,Double.valueOf(array[0]));
 				} else if ("in".equalsIgnoreCase(array[1])) {
 					List list = null;
@@ -597,53 +597,53 @@ public final class ServiceMapping {
 						for (String string : array) {
 							list.add(string);
 						}
-						method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"In", List.class);
+						method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"In", List.class);
 						method.invoke(criteria,list);
 					} else {
-						log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+" In 查询条件不合格，无法添加到查询条件中");
+						log.warn(StringUtils.firstLetterToUpperCase(entry.getKey())+" In 查询条件不合格，无法添加到查询条件中");
 					}
 				} else if ("notIn".equalsIgnoreCase(array[array.length-1])) {
 					List list = null;
-					if (StringUtil.isNotEmpty(array[0])) {
+					if (StringUtils.isNotEmpty(array[0])) {
 						array = array[0].split("&");
 						if (ArrayUtil.isNotEmpty(array)) {
 							list = new ArrayList();
 							for (String string : array) {
 								list.add(string);
 							}
-							method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"NotIn", List.class);
+							method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"NotIn", List.class);
 							method.invoke(criteria,list);
 						} else {
-							log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+" NotIn 查询条件不合格，无法添加到查询条件中");
+							log.warn(StringUtils.firstLetterToUpperCase(entry.getKey())+" NotIn 查询条件不合格，无法添加到查询条件中");
 						}
 					}
 				} else if ("bw".equalsIgnoreCase(array[array.length-1]) || "between".equalsIgnoreCase(array[array.length-1])) {
 					array = array[0].split("&");
 					if (array != null && array.length >= 2) {
-						method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"Between", Double.class, Double.class);
+						method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"Between", Double.class, Double.class);
 						method.invoke(criteria,Double.valueOf(array[0]),Double.valueOf(array[1]));		
 					} else {
-						log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+" Between 查询条件不合格，无法添加到查询条件中");
+						log.warn(StringUtils.firstLetterToUpperCase(entry.getKey())+" Between 查询条件不合格，无法添加到查询条件中");
 					}
 				} else if ("notbw".equalsIgnoreCase(array[array.length-1]) || "notBetween".equalsIgnoreCase(array[array.length-1])) {
 					array = array[0].split("&");
 					if (array != null && array.length >= 2) {
-						method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"NotBetween", Double.class, Double.class);
+						method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"NotBetween", Double.class, Double.class);
 						method.invoke(criteria,Double.valueOf(array[0]),Double.valueOf(array[1]));		
 					} else {
-						log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+" NotBetween 查询条件不合格，无法添加到查询条件中");
+						log.warn(StringUtils.firstLetterToUpperCase(entry.getKey())+" NotBetween 查询条件不合格，无法添加到查询条件中");
 					}
 				} else if ("gt".equalsIgnoreCase(array[array.length-1]) || "greaterThan".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"GreaterThan", Double.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"GreaterThan", Double.class);
 					method.invoke(criteria,Double.valueOf(array[0]));		
 				} else if ("gteq".equalsIgnoreCase(array[array.length-1]) || "gtOrEq".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"GreaterThanOrEqualTo", Double.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"GreaterThanOrEqualTo", Double.class);
 					method.invoke(criteria,Double.valueOf(array[0]));
 				} else if ("lt".equalsIgnoreCase(array[array.length-1]) || "lessThan".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"LessThan", Double.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"LessThan", Double.class);
 					method.invoke(criteria,Double.valueOf(array[0]));
 				} else if ("lteq".equalsIgnoreCase(array[array.length-1]) || "ltOrEq".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"LessThanOrEqualTo", Double.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"LessThanOrEqualTo", Double.class);
 					method.invoke(criteria,Double.valueOf(array[0]));
 				} else {
 					log.warn("找不到执行的方法");
@@ -651,11 +651,11 @@ public final class ServiceMapping {
 			}
 		}  else if (type.equals("class java.lang.Float")) {
 			if (array.length == 1) {
-				method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"EqualTo", Float.class);
+				method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"EqualTo", Float.class);
 				method.invoke(criteria,Float.valueOf(array[0]));
 			} else if (array.length == 2) {
 				if ("noteq".equalsIgnoreCase(array[1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"NotEqualTo", Float.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"NotEqualTo", Float.class);
 					method.invoke(criteria,Float.valueOf(array[0]));
 				} else if ("in".equalsIgnoreCase(array[1])) {
 					List list = null;
@@ -665,10 +665,10 @@ public final class ServiceMapping {
 						for (String string : array) {
 							list.add(string);
 						}
-						method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"In", List.class);
+						method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"In", List.class);
 						method.invoke(criteria,list);
 					} else {
-						log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+" In 查询条件不合格，无法添加到查询条件中");
+						log.warn(StringUtils.firstLetterToUpperCase(entry.getKey())+" In 查询条件不合格，无法添加到查询条件中");
 					}
 				} else if ("notIn".equalsIgnoreCase(array[array.length-1])) {
 					List list = null;
@@ -678,38 +678,38 @@ public final class ServiceMapping {
 						for (String string : array) {
 							list.add(string);
 						}
-						method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"NotIn", List.class);
+						method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"NotIn", List.class);
 						method.invoke(criteria,list);
 					} else {
-						log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+" NotIn 查询条件不合格，无法添加到查询条件中");
+						log.warn(StringUtils.firstLetterToUpperCase(entry.getKey())+" NotIn 查询条件不合格，无法添加到查询条件中");
 					}
 				} else if ("bw".equalsIgnoreCase(array[array.length-1]) || "between".equalsIgnoreCase(array[array.length-1])) {
 					array = array[0].split("&");
 					if (array != null && array.length >= 2) {
-						method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"Between", Float.class, Float.class);
+						method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"Between", Float.class, Float.class);
 						method.invoke(criteria,Float.valueOf(array[0]),Float.valueOf(array[1]));		
 					} else {
-						log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+" Between 查询条件不合格，无法添加到查询条件中");
+						log.warn(StringUtils.firstLetterToUpperCase(entry.getKey())+" Between 查询条件不合格，无法添加到查询条件中");
 					}
 				} else if ("notbw".equalsIgnoreCase(array[array.length-1]) || "notBetween".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"NotBetween", Float.class, Float.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"NotBetween", Float.class, Float.class);
 					array = array[0].split("&");
 					if (array != null && array.length >= 2) {
 						method.invoke(criteria,Float.valueOf(array[0]),Float.valueOf(array[1]));		
 					} else {
-						log.warn(StringUtil.firstLetterToUpperCase(entry.getKey())+" NotBetween 查询条件不合格，无法添加到查询条件中");
+						log.warn(StringUtils.firstLetterToUpperCase(entry.getKey())+" NotBetween 查询条件不合格，无法添加到查询条件中");
 					}
 				} else if ("gt".equalsIgnoreCase(array[array.length-1]) || "greaterThan".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"GreaterThan", Float.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"GreaterThan", Float.class);
 					method.invoke(criteria,Float.valueOf(array[0]));		
 				} else if ("gteq".equalsIgnoreCase(array[array.length-1]) || "gtOrEq".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"GreaterThanOrEqualTo", Float.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"GreaterThanOrEqualTo", Float.class);
 					method.invoke(criteria,Float.valueOf(array[0]));
 				} else if ("lt".equalsIgnoreCase(array[array.length-1]) || "lessThan".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"LessThan", Float.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"LessThan", Float.class);
 					method.invoke(criteria,Float.valueOf(array[0]));
 				} else if ("lteq".equalsIgnoreCase(array[array.length-1]) || "ltOrEq".equalsIgnoreCase(array[array.length-1])) {
-					method = criteria.getClass().getDeclaredMethod("and"+StringUtil.firstLetterToUpperCase(entry.getKey())+"LessThanOrEqualTo", Float.class);
+					method = criteria.getClass().getDeclaredMethod("and"+StringUtils.firstLetterToUpperCase(entry.getKey())+"LessThanOrEqualTo", Float.class);
 					method.invoke(criteria,Float.valueOf(array[0]));
 				} else {
 					log.warn("找不到执行的方法");
@@ -732,38 +732,38 @@ public final class ServiceMapping {
 		}
 		String type = object.getClass().getDeclaredField(entry.getKey()).getType().toString();
 		if (type.equals("class java.lang.String")) {
-			Method method = clas.getDeclaredMethod("set" + StringUtil.firstLetterToUpperCase(entry.getKey()),String.class);
+			Method method = clas.getDeclaredMethod("set" + StringUtils.firstLetterToUpperCase(entry.getKey()),String.class);
 			method.invoke(object, entry.getValue());
 			return ;
 		} else {
-			if (StringUtil.isEmpty(entry.getValue())) {
+			if (StringUtils.isEmpty(entry.getValue())) {
 				log.warn(entry.getKey() + " 值为空，无法把值设置到javabean中");
 				return ;
 			}
 		}
 		if (type.equals("class java.lang.String")) {
-			Method method = clas.getDeclaredMethod("set" + StringUtil.firstLetterToUpperCase(entry.getKey()),String.class);
+			Method method = clas.getDeclaredMethod("set" + StringUtils.firstLetterToUpperCase(entry.getKey()),String.class);
 			method.invoke(object, entry.getValue());
 		} else if (type.equals("class java.lang.Integer")) {
-			Method method = clas.getDeclaredMethod("set" + StringUtil.firstLetterToUpperCase(entry.getKey()),Integer.class);
+			Method method = clas.getDeclaredMethod("set" + StringUtils.firstLetterToUpperCase(entry.getKey()),Integer.class);
 			method.invoke(object, Integer.valueOf(entry.getValue()));
 		} else if (type.equals("class java.util.Date")) {
-			Method method = clas.getDeclaredMethod("set" + StringUtil.firstLetterToUpperCase(entry.getKey()),Date.class);
+			Method method = clas.getDeclaredMethod("set" + StringUtils.firstLetterToUpperCase(entry.getKey()),Date.class);
 			method.invoke(object,DateUtils.parseDateSecondFormat(entry.getValue()));
 		} else if (type.equals("class java.lang.Short")) {
-			Method method = clas.getDeclaredMethod("set" + StringUtil.firstLetterToUpperCase(entry.getKey()),Short.class);
+			Method method = clas.getDeclaredMethod("set" + StringUtils.firstLetterToUpperCase(entry.getKey()),Short.class);
 			method.invoke(object, Short.valueOf(entry.getValue()));
 		} else if (type.equals("class java.lang.Double")) {
-			Method method = clas.getDeclaredMethod("set" + StringUtil.firstLetterToUpperCase(entry.getKey()),Double.class);
+			Method method = clas.getDeclaredMethod("set" + StringUtils.firstLetterToUpperCase(entry.getKey()),Double.class);
 			method.invoke(object, Double.valueOf(entry.getValue()));
 		} else if (type.equals("class java.lang.Boolean")) {
-			Method method = clas.getDeclaredMethod("set" + StringUtil.firstLetterToUpperCase(entry.getKey()),Boolean.class);
+			Method method = clas.getDeclaredMethod("set" + StringUtils.firstLetterToUpperCase(entry.getKey()),Boolean.class);
 			method.invoke(object, Boolean.valueOf(entry.getValue()));
 		} else if (type.equals("class java.lang.Byte")) {
-			Method method = clas.getDeclaredMethod("set" + StringUtil.firstLetterToUpperCase(entry.getKey()),Byte.class);
+			Method method = clas.getDeclaredMethod("set" + StringUtils.firstLetterToUpperCase(entry.getKey()),Byte.class);
 			method.invoke(object, Byte.valueOf(entry.getValue()));
 		} else if (type.equals("class java.lang.Float")) {
-			Method method = clas.getDeclaredMethod("set" + StringUtil.firstLetterToUpperCase(entry.getKey()),Float.class);
+			Method method = clas.getDeclaredMethod("set" + StringUtils.firstLetterToUpperCase(entry.getKey()),Float.class);
 			method.invoke(object, Float.valueOf(entry.getValue()));
 		}
 		

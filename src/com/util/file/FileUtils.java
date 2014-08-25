@@ -2,7 +2,7 @@ package com.util.file;
 
 import java.io.*;
 
-import com.util.string.StringUtil;
+import com.util.string.StringUtils;
 
 public final class FileUtils {
 
@@ -63,6 +63,41 @@ public final class FileUtils {
 		return false;
 	}
 	
+	// 复制文件
+    public static boolean copyFile(String sourcePath, String targetPath) {
+    	return copyFile(new File(sourcePath), new File(targetPath));
+    }
+	// 复制文件
+    public static boolean copyFile(File sourceFile, File targetFile) {
+        InputStream in = null; 
+        OutputStream os = null;
+		try {
+			String path = targetFile.getPath().replaceAll("\\\\", "/");
+       	 
+            String directory = path.substring(0, path.lastIndexOf("/"));
+        	crateDirectory(directory);
+			in = new FileInputStream(sourceFile);
+			os = new FileOutputStream(targetFile.getPath());
+			byte[] buffer = new byte[1024 * 1024];  
+	          int byteread = 0;  
+	          while ((byteread = in.read(buffer)) != -1) {  
+	              os.write(buffer, 0, byteread);  
+	              os.flush();  
+	          }  
+	          return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			 try {
+				if (os!= null)os.close();
+				if (in!= null)in.close();  
+			} catch (IOException e) {
+				e.printStackTrace();
+			}  
+		}
+		return false;
+    }
+    
 	/**
 	 * 判断文件是否存在
 	 * @param path
@@ -80,7 +115,7 @@ public final class FileUtils {
 	 */
 	public static boolean crateDirectory(String path) {
 		File file = new File(path);
-		return file.mkdir();
+		return file.mkdirs();
 	}
 	/**
 	 * 遍历文件夹中文件
@@ -135,7 +170,7 @@ public final class FileUtils {
 		try {
 			fs = new FileInputStream(path);
 			
-			if (StringUtil.isEmpty(encoding)) {
+			if (StringUtils.isEmpty(encoding)) {
 				isr = new InputStreamReader(fs);
 			} else {
 				isr = new InputStreamReader(fs, encoding);
@@ -194,11 +229,16 @@ public final class FileUtils {
 	
     
     public static void main(String[] args) throws Exception {
-		System.out.println(getFileSuffix("D:/dd.txt")); //得到文件后缀名
+		/*System.out.println(getFileSuffix("D:/dd.txt")); //得到文件后缀名
 		System.out.println(getFileSuffixBearPoint("D:/dd.txt")); //得到文件后缀名,包涵小数点
 		System.out.println(isExist("D:/MySQL")); //判断文件是否存在
 		System.out.println(crateDirectory("D:/dd/d/j.jpg")); //创建文件夹
 		write(new FileInputStream(new File("D:/dd.txt")), "D:/dd/d1/dd.txt");
+		System.out.println(crateDirectory("D:/dd5/d/dd/dd.jpg")); //创建文件夹
+		*/
+		
+    	System.out.println(copyFile("D:/dd.txt", "D:/dd6/d1/dd.txt"));
+		
 	}
     
   

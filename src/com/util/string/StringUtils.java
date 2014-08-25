@@ -7,7 +7,7 @@ import java.util.Random;
 import java.util.regex.*;
 
 
-public final class StringUtil {
+public final class StringUtils {
 	
 	public static String fenToYuan(String str) {
 		if (!isEmpty(str)) {
@@ -228,7 +228,7 @@ public final class StringUtil {
 	
 	
 	public static boolean isIntegerLength(String str,int length) {
-		if (StringUtil.isEmpty(str) || length < 0) {
+		if (StringUtils.isEmpty(str) || length < 0) {
 			return false;
 		}
 		String regex = "^\\d{"+length+"}$";
@@ -238,7 +238,7 @@ public final class StringUtil {
 	}
 	
 	public static boolean isIntegerLength(String str,int min,int max) {
-		if (StringUtil.isEmpty(str) || min < 0 || min > max) {
+		if (StringUtils.isEmpty(str) || min < 0 || min > max) {
 			return false;
 		}
 		String regex = "^\\d{"+min+","+max+"}$";

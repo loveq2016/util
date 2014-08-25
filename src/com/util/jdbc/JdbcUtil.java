@@ -26,7 +26,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
-import com.util.string.StringUtil;
+import com.util.string.StringUtils;
 import com.util.xml.Dom4jUtil;
 
 public class JdbcUtil<T> {
@@ -97,9 +97,9 @@ public class JdbcUtil<T> {
 				} else {
 					for (int i = 0; i < array.length; i++) {
 						if (i == 0) {
-							key += StringUtil.firstLetterToLowerCase(array[i]);
+							key += StringUtils.firstLetterToLowerCase(array[i]);
 						} else {
-							key += StringUtil.firstLetterToUpperCase(array[i]);
+							key += StringUtils.firstLetterToUpperCase(array[i]);
 						}
 					}
 				}
@@ -293,9 +293,9 @@ public class JdbcUtil<T> {
 			} else {
 				for (int j = 0; j < array.length; j++) {
 					if (j == 0) {
-						key += StringUtil.firstLetterToLowerCase(array[j]);
+						key += StringUtils.firstLetterToLowerCase(array[j]);
 					} else {
-						key += StringUtil.firstLetterToUpperCase(array[j]);
+						key += StringUtils.firstLetterToUpperCase(array[j]);
 					}
 				}
 			}

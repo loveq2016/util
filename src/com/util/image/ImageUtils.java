@@ -33,8 +33,24 @@ public class ImageUtils {
         // 1-缩放图像：
         // 方法一：按比例缩放
         //ImageUtils.scale("E:/WillenFoo/Private Secret/Girl Picture/psb1.jpg", "e:/psb1.jpg", 2, false);//测试OK
-        // 方法二：按高度和宽度缩放
-        ImageUtils.resizeByAbsolute("C:\\Users\\willenfoo\\Desktop\\新建文件夹 (2)\\willenfoo_01_des.jpg", "e:/abc_scale2.jpg", 500, 300, true);//测试OK
+        // 方法二：按高度和宽度缩放   514428
+    	
+    	/*Integer width = 367;
+    	Integer height = 305;*/
+    	
+    	Integer width = 514;
+    	Integer height = 428;
+        ImageUtils.resizeByAbsolute("E:\\图片\\a100000040_1.jpg", "E:\\图片2\\a100000040_1.jpg", height, width, true);//测试OK
+        ImageUtils.resizeByAbsolute("E:\\图片\\a100000040_2.jpg", "E:\\图片2\\a100000040_2.jpg", height, width, true);//测试OK
+        ImageUtils.resizeByAbsolute("E:\\图片\\a100000040_3.jpg", "E:\\图片2\\a100000040_3.jpg", height, width, true);//测试OK
+        ImageUtils.resizeByAbsolute("E:\\图片\\a100000040_4.jpg", "E:\\图片2\\a100000040_4.jpg", height, width, true);//测试OK
+        ImageUtils.resizeByAbsolute("E:\\图片\\a100000040_5.jpg", "E:\\图片2\\a100000040_5.jpg", height, width, true);//测试OK
+        
+        ImageUtils.resizeByAbsolute("E:\\图片\\a100000043_1.jpg", "E:\\图片2\\a100000043_1.jpg", height, width, true);//测试OK
+        ImageUtils.resizeByAbsolute("E:\\图片\\a100000043_2.jpg", "E:\\图片2\\a100000043_2.jpg", height, width, true);//测试OK
+        ImageUtils.resizeByAbsolute("E:\\图片\\a100000043_3.jpg", "E:\\图片2\\a100000043_3.jpg", height, width, true);//测试OK
+        ImageUtils.resizeByAbsolute("E:\\图片\\a100000043_4.jpg", "E:\\图片2\\a100000043_4.jpg", height, width, true);//测试OK
+        ImageUtils.resizeByAbsolute("E:\\图片\\a100000043_5.jpg", "E:\\图片2\\a100000043_5.jpg", height, width, true);//测试OK
 
         /* // 2-切割图像：
         // 方法一：按指定起点坐标和宽高切割

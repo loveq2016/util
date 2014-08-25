@@ -17,14 +17,14 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
-import com.util.string.StringUtil;
+import com.util.string.StringUtils;
 
 /**
  * 
  * @author geloin
  * @date 2012-5-8 上午11:02:41
  */
-public class MailUtil {
+public class MailUtils {
 
 	/**
 	 * 发件人邮箱服务器
@@ -66,7 +66,7 @@ public class MailUtil {
 	 */
 	private Map<String, String> attachments;
 
-	public MailUtil(String emailHost, String emailUserName,
+	public MailUtils(String emailHost, String emailUserName,
 			String emailPassword, String emailFrom) {
 		this.emailHost = emailHost;
 		this.emailUserName = emailUserName;
@@ -272,9 +272,9 @@ public class MailUtil {
 	 */
 	public void sendEmail() throws Exception {
 
-		if (StringUtil.isEmpty(emailHost) || StringUtil.isEmpty(emailFrom)
-				|| StringUtil.isEmpty(emailUserName)
-				|| StringUtil.isEmpty(emailPassword)) {
+		if (StringUtils.isEmpty(emailHost) || StringUtils.isEmpty(emailFrom)
+				|| StringUtils.isEmpty(emailUserName)
+				|| StringUtils.isEmpty(emailPassword)) {
 			throw new RuntimeException("发件人信息不完全，请确认发件人信息！");
 		}
 
@@ -406,7 +406,7 @@ public class MailUtil {
 		// test6(mu);
 	}
 
-	public static void test1(MailUtil mu) throws Exception {
+	public static void test1(MailUtils mu) throws Exception {
 		String toEmails = "865591315@qq.com";
 		String subject = "第一封，简单文本邮件";
 		StringBuilder builder = new StringBuilder();
@@ -424,7 +424,7 @@ public class MailUtil {
 		mu.sendEmail();
 	}
 
-	public static void test2(MailUtil mu) throws Exception {
+	public static void test2(MailUtils mu) throws Exception {
 		String toEmails = "865591315@qq.com";
 		String subject = "第二封，HTML邮件";
 		StringBuilder builder = new StringBuilder();
@@ -442,7 +442,7 @@ public class MailUtil {
 		mu.sendEmail();
 	}
 
-	public static void test3(MailUtil mu) throws Exception {
+	public static void test3(MailUtils mu) throws Exception {
 		String toEmails = "865591315@qq.com";
 		String subject = "第三封，图片邮件";
 
@@ -470,7 +470,7 @@ public class MailUtil {
 
 	}
 
-	public static void test4(MailUtil mu) throws Exception {
+	public static void test4(MailUtils mu) throws Exception {
 		String toEmails = "865591315@qq.com";
 		String subject = "第四封，附件邮件";
 		Map<String, String> attachments = new HashMap<String, String>();
@@ -492,7 +492,7 @@ public class MailUtil {
 		mu.sendEmail();
 	}
 
-	public static void test5(MailUtil mu) throws Exception {
+	public static void test5(MailUtils mu) throws Exception {
 		String toEmails = "865591315@qq.com";
 		String subject = "第五封，综合邮件";
 
@@ -524,7 +524,7 @@ public class MailUtil {
 		mu.sendEmail();
 	}
 
-	public static void test6(MailUtil mu) throws Exception {
+	public static void test6(MailUtils mu) throws Exception {
 		String toEmails = "865591315@qq.com";
 		String subject = "第五封，群发邮件";
 

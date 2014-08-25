@@ -19,7 +19,7 @@ public interface BaseDao<M,E>  {
 
 	int deleteByExample(E example);
 
-	int deleteByPrimaryKey(Integer userId);
+	int deleteByPrimaryKey(Integer id);
 	
 	int deleteByPrimaryKey(String userId);
 
@@ -30,6 +30,10 @@ public interface BaseDao<M,E>  {
 	List<M> selectByExample(E example);
 
 	M selectByPrimaryKey(Integer Id);
+	
+	M selectByPrimaryKey(String Id);
+	
+	M selectByPrimaryKey(Long Id);
 
 	int updateByExampleSelective(@Param("record") M record,
 			@Param("example") E example);
@@ -55,8 +59,6 @@ public interface BaseDao<M,E>  {
 
 	String avg(E example);
 
-	M selectByEntity(E example);
-	
 	Map<String, Object> selectByExampleForMap(E example);
 	
 	List<Map<String, Object>> selectByExampleForListMap(E example);
@@ -68,9 +70,6 @@ public interface BaseDao<M,E>  {
 	 */
 	List<Map<String, Object>> selectByExampleForListMap(E example,RowBounds row);
 	
-	M executeQuery(E example,String methodName);
-	
-	List<M> executeQuery(E example,RowBounds row,String methodName);
 	
 	/**
 	 * 批量插入数据

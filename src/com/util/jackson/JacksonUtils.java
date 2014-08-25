@@ -7,9 +7,9 @@ import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
-public class JacksonUtil {
+public class JacksonUtils {
 
-	private static final Log log = LogFactory.getLog(JacksonUtil.class);
+	private static final Log log = LogFactory.getLog(JacksonUtils.class);
 	
 	public static String writeValueAsString(Object object) {
 		ObjectMapper mapper = new ObjectMapper();

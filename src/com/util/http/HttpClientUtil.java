@@ -54,7 +54,7 @@ import org.apache.http.protocol.ExecutionContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 
-import com.util.string.StringUtil;
+import com.util.string.StringUtils;
 import com.util.exception.UtilException;
 
 /**
@@ -146,7 +146,7 @@ public  class HttpClientUtil {
 	* @return 响应消息
 	*/
 	public static String get(String url, Map<String, String> params, String charset) {
-		if (StringUtil.isEmpty(url)) {
+		if (StringUtils.isEmpty(url)) {
 			return null;
 		}
 		List<NameValuePair> qparams = getParamsList(params);
@@ -262,14 +262,14 @@ public  class HttpClientUtil {
 	* @return 响应消息
 	*/
 	public static String post(String url, Map<String, String> params, String charset) {
-		if (StringUtil.isEmpty(url)) {
+		if (StringUtils.isEmpty(url)) {
 			return null;
 		}
 		// 创建HttpClient实例
 		DefaultHttpClient httpclient = getDefaultHttpClient(charset);
 		UrlEncodedFormEntity formEntity = null;
 		try {
-			if (StringUtil.isEmpty(charset)) {
+			if (StringUtils.isEmpty(charset)) {
 				formEntity = new UrlEncodedFormEntity(getParamsList(params));
 			} else {
 				formEntity = new UrlEncodedFormEntity(getParamsList(params), charset);
@@ -314,13 +314,13 @@ public  class HttpClientUtil {
 	*/
 	public static String post(String url, Map<String, String> params, String charset, final URL keystoreUrl, 
 			final String keystorePassword, final URL truststoreUrl,	final String truststorePassword) {
-		if (url == null || StringUtil.isEmpty(url)) {
+		if (url == null || StringUtils.isEmpty(url)) {
 			return null;
 		}
 		DefaultHttpClient httpclient = getDefaultHttpClient(charset);
 		UrlEncodedFormEntity formEntity = null;
 		try {
-			if (charset == null || StringUtil.isEmpty(charset)) {
+			if (charset == null || StringUtils.isEmpty(charset)) {
 				formEntity = new UrlEncodedFormEntity(getParamsList(params));
 			} else {
 				formEntity = new UrlEncodedFormEntity(getParamsList(params), charset);

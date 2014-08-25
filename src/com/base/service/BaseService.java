@@ -41,8 +41,15 @@ public interface BaseService<M, E> {
 	 * @param example
 	 * @return
 	 */
-	M selectByEntity(E example);
+	M selectByExampleOne(E example);
 
+	/**
+	 * 通过ID查询model
+	 * @param id
+	 * @return
+	 */
+	M selectById(Long id);
+	
 	/**
 	 * 通过ID查询model
 	 * @param id
@@ -71,7 +78,16 @@ public interface BaseService<M, E> {
 	 * @param example
 	 * @return
 	 */
-	List<M> selectByExample(E example, RowBounds row);
+	List<M> selectByExample(E example,Integer offset,Integer pageSize);
+	
+	/**
+	 * 分页查询，返回pager对象
+	 * @param example
+	 * @param offset
+	 * @param pageSize
+	 * @return
+	 */
+	Pager selectByExampleForPager(E example,Integer offset,Integer pageSize);
 
 	/**
 	 * 统计总行数
@@ -89,6 +105,13 @@ public interface BaseService<M, E> {
 	 */
 	int deleteByExample(E example);
 
+	/**
+	 * 通过ID删除model
+	 * @param id
+	 * @return
+	 */
+	int deleteById(Long id);
+	
 	/**
 	 * 通过ID删除model
 	 * @param id
@@ -179,11 +202,8 @@ public interface BaseService<M, E> {
 	 * @param example
 	 * @return
 	 */
-	List<Map<String, Object>> selectByExampleForListMap(E example,RowBounds row);
+	List<Map<String, Object>> selectByExampleForListMap(E example,Integer offset,Integer pageSize);
 	
-	M executeQuery(E example,String methodName);
-	
-	List<M> executeQuery(E example,RowBounds row,String methodName);
 	
 	/**
 	 * 批量插入数据
@@ -191,14 +211,5 @@ public interface BaseService<M, E> {
 	 * @return
 	 */
 	int batchInsert(List<M> list);
-	
-	/**
-	 * 分页查询，返回pager对象
-	 * @param example
-	 * @param offset
-	 * @param pageSize
-	 * @return
-	 */
-	Pager selectByPager(E example,Integer offset,Integer pageSize);
 	
 }

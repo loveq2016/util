@@ -1,6 +1,7 @@
 package com.util.array;
 
 public class ArrayUtil {
+	
 	/**
 	 * Array is Null.
 	 * @param <T>

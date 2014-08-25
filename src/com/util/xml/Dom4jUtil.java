@@ -7,7 +7,7 @@ import org.dom4j.*;
 import org.dom4j.tree.*;
 import org.dom4j.io.*;
 
-import com.util.string.StringUtil;
+import com.util.string.StringUtils;
 
 public final class Dom4jUtil {
 
@@ -1340,7 +1340,7 @@ public final class Dom4jUtil {
 	public static void toXML(Document document, OutputStream outStream,
 			String encoding)  {
 		OutputFormat outformat = OutputFormat.createPrettyPrint();
-		if (StringUtil.isEmpty(encoding)) {
+		if (StringUtils.isEmpty(encoding)) {
 			encoding = CHARSET_UTF8;
 		}
 
@@ -1562,7 +1562,7 @@ public final class Dom4jUtil {
                     element.detach(); 
                     i++; 
                 } else { 
-                    if (StringUtil.isEmpty(element.attribute("ID").getValue())) {             
+                    if (StringUtils.isEmpty(element.attribute("ID").getValue())) {             
                             element.detach(); 
                             i++; 
                      }

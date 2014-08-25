@@ -10,7 +10,7 @@ import java.security.NoSuchAlgorithmException;
  * @author brent xu
  * 
  */
-public final class Md5Util {
+public final class Md5Utils {
     
     public static String getMD5(String source) {
 		String result = null;
