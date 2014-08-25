@@ -16,7 +16,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import com.util.array.ArrayUtil;
 import com.util.date.DateUtils;
 import com.util.exception.DataErrorsException;
-import com.util.spring.SpringUtil;
+import com.util.spring.SpringUtils;
 import com.util.string.StringUtils;
 import com.util.mybatis.RowBounds;
 import com.util.pager.Pager;
@@ -168,7 +168,7 @@ public final class ServiceMapping {
 			String modelName = StringUtils.firstLetterToLowerCase(modelPackage
 					.substring(modelPackage.lastIndexOf(".") + 1,
 							modelPackage.length()));
-			Object service = SpringUtil.getBean(modelName + "Service");
+			Object service = SpringUtils.getBean(modelName + "Service");
 			Class<?> serciceClass = service.getClass().getSuperclass();
 			
 			Method serviceMethod = null;

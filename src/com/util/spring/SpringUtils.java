@@ -4,7 +4,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 
-public class SpringUtil implements BeanFactoryAware {
+public class SpringUtils implements BeanFactoryAware {
 	private static BeanFactory beanFactory = null;
 
 	//private static SpringUtil servlocator = null;

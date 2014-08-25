@@ -1,7 +1,7 @@
 package com.util.mybatis.interceptor;
 
 import com.util.mybatis.BaseExample;
-import com.util.spring.SpringUtil;
+import com.util.spring.SpringUtils;
 import java.util.Properties;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
@@ -35,7 +35,7 @@ public class CacheInterceptor implements Interceptor {
 				Executor executor = (Executor) invocation.getTarget();
 				CacheKey key = executor.createCacheKey(ms, args[1],
 						(RowBounds) args[2], boundSql);
-				Cache cache = (Cache) SpringUtil.getBean("cache");
+				Cache cache = (Cache) SpringUtils.getBean("cache");
 				Element element = cache.get(key);
 				if (element == null) {
 					object = invocation.proceed();
