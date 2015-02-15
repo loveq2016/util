@@ -67,6 +67,10 @@ public abstract class BaseServiceImpl<M, E> implements BaseService<M, E> {
 	public final int deleteById(String id) {
 		return baseDao.deleteByPrimaryKey(id);
 	}
+	
+	public final int deleteById(Long id) {
+		return baseDao.deleteByPrimaryKey(id);
+	}
 
 	public final int updateByExample(M model, E example) {
 		return baseDao.updateByExampleSelective(model, example);
