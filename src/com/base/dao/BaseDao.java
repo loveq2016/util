@@ -22,6 +22,8 @@ public interface BaseDao<M,E>  {
 	int deleteByPrimaryKey(Integer id);
 	
 	int deleteByPrimaryKey(String userId);
+	
+	int deleteByPrimaryKey(Long id);
 
 	int insert(M record);
 
@@ -77,4 +79,6 @@ public interface BaseDao<M,E>  {
 	 * @return
 	 */
 	int batchInsert(List<M> list);
+
+	
 }
