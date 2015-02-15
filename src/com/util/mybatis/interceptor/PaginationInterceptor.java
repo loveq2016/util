@@ -20,6 +20,7 @@ import org.apache.ibatis.session.RowBounds;
 import com.util.mybatis.dialect.Dialect;
 import com.util.mybatis.dialect.impl.MySQLDialect;
 import com.util.mybatis.dialect.impl.OracleDialect;
+import com.util.mybatis.dialect.impl.PostgresqlDialect;
 
 /**
  * @author fuwei
@@ -51,8 +52,10 @@ public class PaginationInterceptor implements Interceptor {
 		Dialect dialect = null;
 		if (Dialect.MYSQL.equalsIgnoreCase(databaseType)) {
 			dialect = new MySQLDialect();
-		} if (Dialect.ORACLE.equalsIgnoreCase(databaseType)) {
+		} else if (Dialect.ORACLE.equalsIgnoreCase(databaseType)) {
 			dialect = new OracleDialect();
+		} else if (Dialect.POSTGRESQL.equalsIgnoreCase(databaseType)) {
+			dialect = new PostgresqlDialect();
 		} else {
 			dialect = new MySQLDialect();
 		}
